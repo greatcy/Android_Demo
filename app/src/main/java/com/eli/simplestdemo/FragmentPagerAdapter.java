@@ -1,24 +1,19 @@
 package com.eli.simplestdemo;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.util.SparseArray;
-import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by chenjunheng on 2018/2/12.
  */
 
-public class BaseFragmentPagerAdapter extends FragmentPagerAdapter {
+public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
     private List<Fragment> mFragments;
 
-    BaseFragmentPagerAdapter(FragmentManager fm) {
+    FragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

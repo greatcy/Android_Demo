@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = findViewById(R.id.viewpager);
         mTabLayout = findViewById(R.id.tabs);
 
-        BaseFragmentPagerAdapter adapter =
-                new BaseFragmentPagerAdapter(getSupportFragmentManager());
+        FragmentPagerAdapter adapter =
+                new FragmentPagerAdapter(getSupportFragmentManager());
 
         List<Fragment> fragments = new ArrayList<>();
         DownloadedFragment df=new DownloadedFragment();
