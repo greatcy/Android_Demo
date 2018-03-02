@@ -2,6 +2,8 @@ package com.eli.simplestdemo;
 
 import android.app.Application;
 
+import com.eli.downloadlib.API;
+
 /**
  * Created by chenjunheng on 2018/2/13.
  */

@@ -25,7 +25,7 @@ public class DownloadingFragment extends Fragment implements IFragmentInterface{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.downloading_fragment, container, false);
-        mRecyclerView = root.findViewById(R.id.recyclerView);
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -40,7 +40,7 @@ public class DownloadingFragment extends Fragment implements IFragmentInterface{
         for (int i = 0; i < myDataset.length; i++) {
             myDataset[i] = "info " + i;
         }
-        mAdapter = new DownloadingAdapter(myDataset);
+        mAdapter = new DownloadingAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
         return root;
     }
@@ -48,5 +48,9 @@ public class DownloadingFragment extends Fragment implements IFragmentInterface{
     @Override
     public String getTitle() {
         return DLApplication.getApplication().getString(R.string.tab_downloading);
+    }
+
+    public RecyclerView.Adapter getAdapter() {
+        return mAdapter;
     }
 }

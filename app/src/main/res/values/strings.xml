@@ -3,4 +3,6 @@
 
     <string name="tab_downloading">downloading</string>
     <string name="tab_downloaded">downloaded</string>
+
+    <string name="tips_create_task_complete">create task has been done!</string>
 </resources>

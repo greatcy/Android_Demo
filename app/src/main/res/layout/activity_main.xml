@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="15dp"
+        android:background="?attr/colorPrimary"
         android:src="@android:drawable/ic_menu_add" />
 
 </android.support.design.widget.CoordinatorLayout>

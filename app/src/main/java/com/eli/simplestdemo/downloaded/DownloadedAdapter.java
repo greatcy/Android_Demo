@@ -1,9 +1,10 @@
-package com.eli.simplestdemo.downed;
+package com.eli.simplestdemo.downloaded;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.eli.simplestdemo.R;
@@ -40,7 +41,9 @@ class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.ViewHolde
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.my_text_view, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        TextView textView = v.findViewById(R.id.info_text);
+        TextView textView = (TextView) v.findViewById(R.id.tv_task_name);
+        ProgressBar pb= (ProgressBar) v.findViewById(R.id.progressBar);
+        pb.setProgress(88);
         return new ViewHolder(v,textView);
     }
 

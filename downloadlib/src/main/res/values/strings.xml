@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DownloadLib</string>
+    <string name="per_second">/s</string>
+    <string name="free">%1$s free · ↓ %2$s · ↑ %3$s</string>
+</resources>

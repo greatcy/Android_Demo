@@ -1,4 +1,4 @@
-package com.eli.simplestdemo.downed;
+package com.eli.simplestdemo.downloaded;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,7 +26,7 @@ public class DownloadedFragment extends Fragment implements IFragmentInterface {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.downloading_fragment, container, false);
-        mRecyclerView = root.findViewById(R.id.recyclerView);
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
