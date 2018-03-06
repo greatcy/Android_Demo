@@ -50,6 +50,7 @@ public class DownloadingFragment extends Fragment implements IFragmentInterface{
         return DLApplication.getApplication().getString(R.string.tab_downloading);
     }
 
+    @Override
     public RecyclerView.Adapter getAdapter() {
         return mAdapter;
     }

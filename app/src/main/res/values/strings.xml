@@ -5,4 +5,19 @@
     <string name="tab_downloaded">downloaded</string>
 
     <string name="tips_create_task_complete">create task has been done!</string>
+
+    <string name="action_search">Search</string>
+    <string name="action_setting">Setting</string>
+    <string name="action_about">About</string>
+    <string name="action_exit">Exit</string>
+
+    <string name="action_start">Start/Resume</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_open_with_other">Open with other app</string>
+
+    <string name="option_share">Share</string>
+
+    <string name="add_torrent">Add Torrent</string>
+    <string name="add_magnet">Add_Magnet</string>
 </resources>

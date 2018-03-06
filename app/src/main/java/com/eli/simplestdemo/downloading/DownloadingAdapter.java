@@ -49,7 +49,7 @@ class DownloadingAdapter extends RecyclerView.Adapter<DownloadingAdapter.ViewHol
         ViewHolder vh = new ViewHolder(v);
         vh.mProgressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         vh.mTaskName = (TextView) v.findViewById(R.id.tv_task_name);
-        vh.mTaskSize = (TextView) v.findViewById(R.id.tv_size);
+        vh.mTaskSize = (TextView) v.findViewById(R.id.tv_status);
         return vh;
     }
 

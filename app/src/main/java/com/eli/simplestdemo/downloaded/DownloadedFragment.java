@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 
 import com.eli.simplestdemo.DLApplication;
 import com.eli.simplestdemo.IFragmentInterface;
@@ -37,17 +38,23 @@ public class DownloadedFragment extends Fragment implements IFragmentInterface {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        String mDataSet[] = new String[1000];
+        String mDataSet[] = new String[10];
         for (int i = 0; i < mDataSet.length; i++) {
             mDataSet[i] = "info downloaded" + i;
         }
         mAdapter = new DownloadedAdapter(mDataSet);
         mRecyclerView.setAdapter(mAdapter);
+
         return root;
     }
 
     @Override
     public String getTitle() {
         return DLApplication.getApplication().getString(R.string.tab_downloaded);
+    }
+
+    @Override
+    public RecyclerView.Adapter getAdapter() {
+        return mAdapter;
     }
 }
