@@ -2,6 +2,7 @@ package com.eli.simplestdemo.downloading;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.eli.downloadlib.Utils;
 import com.eli.simplestdemo.R;
 
 import libtorrent.Libtorrent;
+
+import static com.eli.simplestdemo.Const.LOG_TAG;
 
 /**
  * Created by chenjunheng on 2018/2/12.
@@ -63,6 +66,7 @@ class DownloadingAdapter extends RecyclerView.Adapter<DownloadingAdapter.ViewHol
         holder.mTaskName.setText(torrent.name());
         holder.mTaskSize.setText(Utils.formatSize(mContext, Libtorrent.torrentBytesLength(torrent.t)));
         holder.mProgressBar.setProgress(torrent.getProgress());
+        Log.d(LOG_TAG, "download progress:" + torrent.getProgress());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

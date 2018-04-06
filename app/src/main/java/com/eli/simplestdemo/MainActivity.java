@@ -1,6 +1,7 @@
 package com.eli.simplestdemo;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -24,11 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO 增加一个中间网速进度条 http://mobile.51cto.com/android-534640.htm
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private IFragmentInterface mCurFragment;
-    private static final int REFRESH_SEC = 1000;
+    private static final int REFRESH_SEC = 3000;
+
+
+    final DownloadedFragment df = new DownloadedFragment();
+    final DownloadingFragment dif = new DownloadingFragment();
 
     private Handler handler = new Handler();
 
@@ -82,17 +87,24 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        View fab = findViewById(R.id.fab);
 
+        View addTorrent = findViewById(R.id.torrent_add_button);
+        addTorrent.setOnClickListener(this);
+
+        View addMagnet = findViewById(R.id.torrent_magnet_button);
+        addMagnet.setOnClickListener(this);
+
+        initViewpager();
+        mRefreshTicks.run();
+    }
+
+    private void initViewpager() {
         FragmentPagerAdapter adapter =
                 new FragmentPagerAdapter(getSupportFragmentManager());
 
         List<Fragment> fragments = new ArrayList<>();
-        final DownloadedFragment df = new DownloadedFragment();
-        final DownloadingFragment dif = new DownloadingFragment();
         fragments.add(dif);
         fragments.add(df);
         adapter.setFragments(fragments);
@@ -102,27 +114,6 @@ public class MainActivity extends AppCompatActivity {
 
         mTabLayout.setupWithViewPager(mViewPager);
 
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FileSelectorActivity.getTorrentFile(MainActivity.this, new FileSelectorActivity.ICallBack() {
-//                    @Override
-//                    public void onGetFile(File file) {
-//                        if (file != null) {
-//                            API.createTask(MainActivity.this, file, new API.ICreateTaskCallBack() {
-//                                @Override
-//                                public void onComplete() {
-//                                    Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
-//                                    if (dif.getAdapter() != null) {
-//                                        dif.getAdapter().notifyDataSetChanged();
-//                                    }
-//                                }
-//                            });
-//                        }
-//                    }
-//                });
-//            }
-//        });
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -144,6 +135,41 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//        mRefreshTicks.run();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.torrent_add_button:
+                FileSelectorActivity.getTorrentFile(MainActivity.this, new FileSelectorActivity.ICallBack() {
+                    @Override
+                    public void onGetFile(File file) {
+                        if (file != null) {
+                            //TODO
+                        } else {
+                            //TODO test
+                            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+
+                                    File.separator+
+                                    "test.torrent");
+                            if (file.exists()) {
+                                API.createTask(MainActivity.this, file, new API.ICreateTaskCallBack() {
+                                    @Override
+                                    public void onComplete() {
+                                        Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
+                                        if (dif.getAdapter() != null) {
+                                            dif.getAdapter().notifyDataSetChanged();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+                break;
+            case R.id.torrent_magnet_button:
+
+                break;
+
+        }
     }
 }

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import java.io.File;
@@ -48,9 +49,11 @@ public class FileSelectorActivity extends AppCompatActivity {
             int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             actualimagecursor.moveToFirst();
             String img_path = actualimagecursor.getString(actual_image_column_index);
-            File file = new File(img_path);
+            File file = null;
+            if (!TextUtils.isEmpty(img_path)) {
+                file = new File(img_path);
 //            Toast.makeText(FileSelectorActivity.this, file.toString(), Toast.LENGTH_SHORT).show();
-
+            }
             this.finish();
             if (mCallBack != null) {
                 mCallBack.onGetFile(file);
