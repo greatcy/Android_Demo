@@ -495,6 +495,8 @@ public class Storage extends com.github.axet.androidlibrary.app.Storage implemen
                 long p = Libtorrent.torrentPendingBytesLength(t);
                 if (p == 0)
                     return 0;
+                Log.d(TAG, "get progress downloaded:" + Libtorrent.torrentPendingBytesCompleted(t) + " total:" +
+                        p);
                 return (int) (Libtorrent.torrentPendingBytesCompleted(t) * 100 / p);
             }
             return 0;
@@ -908,7 +910,7 @@ public class Storage extends com.github.axet.androidlibrary.app.Storage implemen
 
     public Uri getStoragePath() {
         SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(context);
-        String path = shared.getString(Const.PREFERENCE_STORAGE, Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+context.getString(R.string.app_name));
+        String path = shared.getString(Const.PREFERENCE_STORAGE, Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + context.getString(R.string.app_name));
         return getStoragePath(path);
     }
 
@@ -1096,6 +1098,10 @@ public class Storage extends com.github.axet.androidlibrary.app.Storage implemen
         if (tt == null) {
             throw new RuntimeException(Libtorrent.error());
         }
+
+        if (!Libtorrent.startTorrent(tt.t))
+            throw new RuntimeException(Libtorrent.error());
+
         add(tt);
         return tt;
     }

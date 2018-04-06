@@ -32,7 +32,7 @@ class DownloadingAdapter extends RecyclerView.Adapter<DownloadingAdapter.ViewHol
     // you provide access to all the views for a data item in a view holder
     static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        TextView mTaskName, mTaskSize;
+        TextView mTaskName, mTaskSize, mStatus;
         ProgressBar mProgressBar;
 
         ViewHolder(View v) {
@@ -52,7 +52,8 @@ class DownloadingAdapter extends RecyclerView.Adapter<DownloadingAdapter.ViewHol
         ViewHolder vh = new ViewHolder(v);
         vh.mProgressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         vh.mTaskName = (TextView) v.findViewById(R.id.tv_task_name);
-        vh.mTaskSize = (TextView) v.findViewById(R.id.tv_status);
+        vh.mTaskSize = (TextView) v.findViewById(R.id.tv_file_size);
+        vh.mStatus = (TextView) v.findViewById(R.id.tv_status);
         return vh;
     }
 
@@ -66,6 +67,26 @@ class DownloadingAdapter extends RecyclerView.Adapter<DownloadingAdapter.ViewHol
         holder.mTaskName.setText(torrent.name());
         holder.mTaskSize.setText(Utils.formatSize(mContext, Libtorrent.torrentBytesLength(torrent.t)));
         holder.mProgressBar.setProgress(torrent.getProgress());
+
+        int torrentStatus = Libtorrent.torrentStatus(torrent.t);
+        switch (torrentStatus){
+            case Libtorrent.StatusChecking:
+                holder.mStatus.setText("checking");
+                break;
+            case Libtorrent.StatusPaused:
+                holder.mStatus.setText("pause");
+                break;
+            case Libtorrent.StatusQueued:
+                holder.mStatus.setText("queue");
+                break;
+            case Libtorrent.StatusDownloading:
+                holder.mStatus.setText("downloading");
+                break;
+            case Libtorrent.StatusSeeding:
+                holder.mStatus.setText("seeding");
+                break;
+        }
+
         Log.d(LOG_TAG, "download progress:" + torrent.getProgress());
     }
 

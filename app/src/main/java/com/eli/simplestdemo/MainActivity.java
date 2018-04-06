@@ -24,6 +24,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import libtorrent.Libtorrent;
+
 //TODO 增加一个中间网速进度条 http://mobile.51cto.com/android-534640.htm
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ViewPager mViewPager;
@@ -141,30 +143,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.torrent_add_button:
-                FileSelectorActivity.getTorrentFile(MainActivity.this, new FileSelectorActivity.ICallBack() {
-                    @Override
-                    public void onGetFile(File file) {
-                        if (file != null) {
-                            //TODO
-                        } else {
-                            //TODO test
-                            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+
-                                    File.separator+
-                                    "test.torrent");
-                            if (file.exists()) {
-                                API.createTask(MainActivity.this, file, new API.ICreateTaskCallBack() {
-                                    @Override
-                                    public void onComplete() {
-                                        Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
-                                        if (dif.getAdapter() != null) {
-                                            dif.getAdapter().notifyDataSetChanged();
-                                        }
-                                    }
-                                });
+                //TODO add file selector
+//                FileSelectorActivity.getTorrentFile(MainActivity.this, new FileSelectorActivity.ICallBack() {
+//                    @Override
+//                    public void onGetFile(File file) {
+//                        if (file != null) {
+//                            //TODO
+//                        } else {
+//                            //TODO test
+//                            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+
+//                                    File.separator+
+//                                    "test.torrent");
+//                            if (file.exists()) {
+//                                API.createTask(MainActivity.this, file, new API.ICreateTaskCallBack() {
+//                                    @Override
+//                                    public void onComplete() {
+//                                        Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
+//                                        if (dif.getAdapter() != null) {
+//                                            dif.getAdapter().notifyDataSetChanged();
+//                                        }
+//                                    }
+//                                });
+//                            }
+//                        }
+//                    }
+//                });
+
+                File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                        File.separatorChar + "test.torrent");
+
+                if (file.exists()) {
+                    API.createTask(MainActivity.this, file, new API.ICreateTaskCallBack() {
+                        @Override
+                        public void onComplete() {
+                            Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
+                            if (dif.getAdapter() != null) {
+                                dif.getAdapter().notifyDataSetChanged();
                             }
                         }
-                    }
-                });
+                    });
+                }
                 break;
             case R.id.torrent_magnet_button:
 
