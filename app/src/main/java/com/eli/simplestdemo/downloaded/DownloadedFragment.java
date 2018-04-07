@@ -9,20 +9,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-
+import com.eli.downloadlib.Storage;
 import com.eli.simplestdemo.DLApplication;
 import com.eli.simplestdemo.IFragmentInterface;
 import com.eli.simplestdemo.R;
+import com.eli.simplestdemo.UIRefreshAgent;
+
+import java.util.List;
 
 /**
  * Created by chenjunheng on 2018/2/12.
  */
 
-public class DownloadedFragment extends Fragment implements IFragmentInterface {
+public class DownloadedFragment extends Fragment implements IFragmentInterface,UIRefreshAgent.ICallBack {
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-
+    private NewDownloadedAdapter mAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,13 +39,14 @@ public class DownloadedFragment extends Fragment implements IFragmentInterface {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        String mDataSet[] = new String[10];
-        for (int i = 0; i < mDataSet.length; i++) {
-            mDataSet[i] = "info downloaded" + i;
+        String myDataset[] = new String[1000];
+        for (int i = 0; i < myDataset.length; i++) {
+            myDataset[i] = "info " + i;
         }
-        mAdapter = new DownloadedAdapter(mDataSet);
+        mAdapter = new NewDownloadedAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
 
+        UIRefreshAgent.getInstance(getActivity()).registerMonitor(this, UIRefreshAgent.MONITOR_DOWNLOADED_FLAG);
         return root;
     }
 
@@ -56,5 +58,14 @@ public class DownloadedFragment extends Fragment implements IFragmentInterface {
     @Override
     public RecyclerView.Adapter getAdapter() {
         return mAdapter;
+    }
+
+    @Override
+    public void onListChange(List<Storage.Torrent> paramList) {
+        if (this.mAdapter != null)
+        {
+            this.mAdapter.setData(paramList);
+            this.mAdapter.notifyDataSetChanged();
+        }
     }
 }

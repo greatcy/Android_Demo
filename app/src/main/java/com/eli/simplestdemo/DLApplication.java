@@ -22,5 +22,7 @@ public class DLApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        UIRefreshAgent.getInstance(this).startUpdateLooper();
     }
 }

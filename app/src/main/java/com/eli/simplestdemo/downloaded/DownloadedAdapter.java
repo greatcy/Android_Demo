@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.eli.simplestdemo.R;
-import com.eli.simplestdemo.TaskActionModeCallback;
+import com.eli.simplestdemo.ActionModeCallback;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * Created by chenjunheng on 2018/2/12.
  */
-class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.ViewHolder> implements TaskActionModeCallback.ActionModeReCallBack {
+class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.ViewHolder> implements ActionModeCallback.ActionModeReCallBack {
     private static final String TAG = DownloadedAdapter.class.getSimpleName();
 
     //TODO actionMode 应该归属Activity
@@ -113,7 +113,7 @@ class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.ViewHolde
                 isInActionMode = true;
                 mSelectedItemPos.add(position);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                TaskActionModeCallback tamc = new TaskActionModeCallback(DownloadedAdapter.this);
+                ActionModeCallback tamc = new ActionModeCallback(DownloadedAdapter.this);
                 actionMode = activity.startActionMode(tamc);
                 holder.mCheckBox.setChecked(true);
                 return false;

@@ -1,9 +1,12 @@
 package com.eli.simplestdemo;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +18,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.eli.downloadlib.API;
-import com.eli.downloadlib.Storage;
-import com.eli.fileselector.FileSelectorActivity;
 import com.eli.simplestdemo.downloaded.DownloadedFragment;
 import com.eli.simplestdemo.downloading.DownloadingFragment;
 
@@ -24,30 +25,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import libtorrent.Libtorrent;
-
 //TODO 增加一个中间网速进度条 http://mobile.51cto.com/android-534640.htm
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
-    private IFragmentInterface mCurFragment;
-    private static final int REFRESH_SEC = 3000;
-
 
     final DownloadedFragment df = new DownloadedFragment();
     final DownloadingFragment dif = new DownloadingFragment();
-
-    private Handler handler = new Handler();
-
-    private Runnable mRefreshTicks = new Runnable() {
-        @Override
-        public void run() {
-            Storage.getInstance(MainActivity.this).update();
-            if (mCurFragment != null)
-                mCurFragment.getAdapter().notifyDataSetChanged();
-            handler.postDelayed(mRefreshTicks, REFRESH_SEC);
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addMagnet.setOnClickListener(this);
 
         initViewpager();
-        mRefreshTicks.run();
     }
 
     private void initViewpager() {
@@ -110,33 +93,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragments.add(dif);
         fragments.add(df);
         adapter.setFragments(fragments);
-        mCurFragment = dif;
-
         mViewPager.setAdapter(adapter);
-
         mTabLayout.setupWithViewPager(mViewPager);
-
-
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (position == 0)
-                    MainActivity.this.mCurFragment = dif;
-                else {
-                    MainActivity.this.mCurFragment = df;
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
     @Override
@@ -169,17 +127,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    }
 //                });
 
-                File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                final File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
                         File.separatorChar + "test.torrent");
 
                 if (file.exists()) {
-                    API.createTask(MainActivity.this, file, new API.ICreateTaskCallBack() {
+                    requestRWPermission(new Runnable() {
                         @Override
-                        public void onComplete() {
-                            Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
-                            if (dif.getAdapter() != null) {
-                                dif.getAdapter().notifyDataSetChanged();
-                            }
+                        public void run() {
+                            API.createTask(MainActivity.this, file, new API.ICreateTaskCallBack() {
+                                @Override
+                                public void onComplete() {
+                                    Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
+                                    if (dif.getAdapter() != null) {
+                                        dif.getAdapter().notifyDataSetChanged();
+                                    }
+                                }
+                            });
                         }
                     });
                 }
@@ -188,6 +151,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
 
+        }
+    }
+
+    private final int REQUEST_PERMISSION_CODE = 100;
+    private Runnable mGrantedPermissionHolder;
+
+    private void requestRWPermission(Runnable holder) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            int readPermissioin = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+            int writePerission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (readPermissioin != PackageManager.PERMISSION_GRANTED ||
+                    writePerission != PackageManager.PERMISSION_GRANTED) {
+                this.mGrantedPermissionHolder = holder;
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
+                        , Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE);
+            }
+            else{
+                holder.run();
+            }
+        } else {
+            mGrantedPermissionHolder.run();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        boolean getPermission = true;
+
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                getPermission = false;
+            }
+        }
+
+        if (getPermission && mGrantedPermissionHolder != null) {
+            mGrantedPermissionHolder.run();
         }
     }
 }

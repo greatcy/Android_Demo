@@ -9,10 +9,10 @@ import android.view.MenuItem;
  * Created by chenjunheng on 2018/3/6.
  */
 
-public class TaskActionModeCallback implements ActionMode.Callback {
+public class ActionModeCallback implements ActionMode.Callback {
     private ActionModeReCallBack actionModeReCallBack;
 
-    public TaskActionModeCallback(ActionModeReCallBack reCallBack) {
+    public ActionModeCallback(ActionModeReCallBack reCallBack) {
         this.actionModeReCallBack = reCallBack;
     }
 

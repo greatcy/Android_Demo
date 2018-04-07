@@ -10,17 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.eli.downloadlib.Storage;
 import com.eli.simplestdemo.DLApplication;
 import com.eli.simplestdemo.IFragmentInterface;
 import com.eli.simplestdemo.R;
+import com.eli.simplestdemo.UIRefreshAgent;
+
+import java.util.List;
 
 /**
  * Created by chenjunheng on 2018/2/12.
  */
 
-public class DownloadingFragment extends Fragment implements IFragmentInterface{
+public class DownloadingFragment extends Fragment implements IFragmentInterface,UIRefreshAgent.ICallBack{
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private DownloadingAdapter mAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,6 +46,8 @@ public class DownloadingFragment extends Fragment implements IFragmentInterface{
         }
         mAdapter = new DownloadingAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
+
+        UIRefreshAgent.getInstance(getActivity()).registerMonitor(this, UIRefreshAgent.MONITOR_DOWNLOADING_FLAG);
         return root;
     }
 
@@ -53,5 +59,14 @@ public class DownloadingFragment extends Fragment implements IFragmentInterface{
     @Override
     public RecyclerView.Adapter getAdapter() {
         return mAdapter;
+    }
+
+    @Override
+    public void onListChange(List<Storage.Torrent> paramList) {
+        if (this.mAdapter != null)
+        {
+            this.mAdapter.setData(paramList);
+            this.mAdapter.notifyDataSetChanged();
+        }
     }
 }
