@@ -1,6 +1,7 @@
 package com.eli.simplestdemo;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,8 +20,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.eli.downloadlib.API;
+import com.eli.fileselector.OpenFileDialog;
 import com.eli.simplestdemo.downloaded.DownloadedFragment;
 import com.eli.simplestdemo.downloading.DownloadingFragment;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     final DownloadedFragment df = new DownloadedFragment();
     final DownloadingFragment dif = new DownloadingFragment();
+
+    private FloatingActionsMenu fam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View addMagnet = findViewById(R.id.torrent_magnet_button);
         addMagnet.setOnClickListener(this);
 
+        fam = (FloatingActionsMenu) findViewById(R.id.fab);
+
         initViewpager();
     }
 
@@ -101,60 +109,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.torrent_add_button:
-                //TODO add file selector
-//                FileSelectorActivity.getTorrentFile(MainActivity.this, new FileSelectorActivity.ICallBack() {
-//                    @Override
-//                    public void onGetFile(File file) {
-//                        if (file != null) {
-//                            //TODO
-//                        } else {
-//                            //TODO test
-//                            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+
-//                                    File.separator+
-//                                    "test.torrent");
-//                            if (file.exists()) {
-//                                API.createTask(MainActivity.this, file, new API.ICreateTaskCallBack() {
-//                                    @Override
-//                                    public void onComplete() {
-//                                        Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
-//                                        if (dif.getAdapter() != null) {
-//                                            dif.getAdapter().notifyDataSetChanged();
-//                                        }
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    }
-//                });
-
-                final File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
-                        File.separatorChar + "test.torrent");
-
-                if (file.exists()) {
-                    requestRWPermission(new Runnable() {
-                        @Override
-                        public void run() {
-                            API.createTask(MainActivity.this, file, new API.ICreateTaskCallBack() {
-                                @Override
-                                public void onComplete() {
-                                    Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
-                                    if (dif.getAdapter() != null) {
-                                        dif.getAdapter().notifyDataSetChanged();
-                                    }
+                requestRWPermission(new Runnable() {
+                    @Override
+                    public void run() {
+                        final OpenFileDialog dialog = new OpenFileDialog(MainActivity.this, OpenFileDialog.DIALOG_TYPE.FILE_DIALOG, false);
+                        //TODO set default folder
+                        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface d, int which) {
+                                File f = dialog.getCurrentPath();
+                                if (f != null && f.exists()) {
+                                    Log.d(Const.LOG_TAG, "select file path:" + f.getAbsolutePath());
+                                    API.createTask(MainActivity.this, f, new API.ICreateTaskCallBack() {
+                                        @Override
+                                        public void onComplete() {
+                                            Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
+                                            if (dif.getAdapter() != null) {
+                                                dif.getAdapter().notifyDataSetChanged();
+                                            }
+                                        }
+                                    });
                                 }
-                            });
-                        }
-                    });
-                }
+                            }
+                        });
+                        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                Log.d(Const.LOG_TAG, "onCancel");
+                            }
+                        });
+                        dialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d(Const.LOG_TAG, "setNegativeButton onCancel");
+                            }
+                        });
+                        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface d) {
+                                Log.d(Const.LOG_TAG, "onDismiss");
+                            }
+                        });
+                        dialog.show();
+                    }
+                });
+                fam.collapse();
                 break;
             case R.id.torrent_magnet_button:
-
+                fam.collapse();
                 break;
 
         }
     }
 
-    private final int REQUEST_PERMISSION_CODE = 100;
     private Runnable mGrantedPermissionHolder;
 
     private void requestRWPermission(Runnable holder) {
@@ -164,10 +171,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (readPermissioin != PackageManager.PERMISSION_GRANTED ||
                     writePerission != PackageManager.PERMISSION_GRANTED) {
                 this.mGrantedPermissionHolder = holder;
+                int REQUEST_PERMISSION_CODE = 100;
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
                         , Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE);
-            }
-            else{
+            } else {
                 holder.run();
             }
         } else {
