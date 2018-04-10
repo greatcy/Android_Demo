@@ -20,4 +20,15 @@
 
     <string name="add_torrent">Add Torrent</string>
     <string name="add_magnet">Add_Magnet</string>
+
+    <string name="setting_download_location_title">Downloaded location</string>
+    <string name="setting_open_select_dlg_title">Select dialog</string>
+    <string name="setting_download_only_wifi_title">Only wifi</string>
+    <string name="setting_keep_screen_on_title">Keep screen on</string>
+
+    <string name="setting_download_location">Set downloaded file location</string>
+    <string name="setting_open_select_dlg">Show select dialog before downloading</string>
+    <string name="setting_download_only_wifi">Download only in wifi</string>
+    <string name="setting_keep_screen_on">Keep screen on</string>
+
 </resources>

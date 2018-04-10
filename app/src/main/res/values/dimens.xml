@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_margin_horizontal_edge">15dp</dimen>
+    <dimen name="item_subtitle_margin_top">5dp</dimen>
+</resources>

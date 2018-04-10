@@ -2,6 +2,7 @@ package com.eli.simplestdemo;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +24,7 @@ import com.eli.downloadlib.API;
 import com.eli.fileselector.OpenFileDialog;
 import com.eli.simplestdemo.downloaded.DownloadedFragment;
 import com.eli.simplestdemo.downloading.DownloadingFragment;
+import com.eli.simplestdemo.setting.SettingActivity;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.io.File;
@@ -63,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-
+                Intent intent = new Intent(this, SettingActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.action_about:
 
