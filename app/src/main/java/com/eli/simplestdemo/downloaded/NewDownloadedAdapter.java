@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,7 +138,7 @@ public class NewDownloadedAdapter extends RecyclerView.Adapter<NewDownloadedAdap
                                                               int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.my_text_view, parent, false);
+                .inflate(R.layout.download_item_view, parent, false);
         // set the view's size, margins, paddings and layout parameters
         return new ViewHolder(v);
     }
