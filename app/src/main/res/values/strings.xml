@@ -31,4 +31,5 @@
     <string name="setting_download_only_wifi">Download only in wifi</string>
     <string name="setting_keep_screen_on">Keep screen on</string>
 
+    <string name="speed">speed</string>>
 </resources>

@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -22,6 +21,7 @@ import android.widget.Toast;
 
 import com.eli.downloadlib.API;
 import com.eli.fileselector.OpenFileDialog;
+import com.eli.simplestdemo.download.widget.DialProgress;
 import com.eli.simplestdemo.downloaded.DownloadedFragment;
 import com.eli.simplestdemo.downloading.DownloadingFragment;
 import com.eli.simplestdemo.setting.SettingActivity;
@@ -31,7 +31,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO 增加一个中间网速进度条 http://mobile.51cto.com/android-534640.htm
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
@@ -92,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addMagnet.setOnClickListener(this);
 
         fam = (FloatingActionsMenu) findViewById(R.id.fab);
+        DialProgress mSpeedProgress= (DialProgress) findViewById(R.id.dial_progress_bar);
+        UIRefreshAgent.getInstance(this).setTotalSeepProgress(mSpeedProgress);
 
         initViewpager();
     }

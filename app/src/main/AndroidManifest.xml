@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".setting.SettingActivity" />
+        <activity android:name=".setting.SettingActivity"
+            />
     </application>
 
 </manifest>

@@ -61,7 +61,7 @@ public class Utils {
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null&&isConnectedWifi(context)) { // connected to the internet
+        if (activeNetwork != null && isConnectedWifi(context)) { // connected to the internet
             return true;
         }
         return false;
@@ -76,5 +76,31 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static speedInfo getSpeedInfo(Context context, long s) {
+        speedInfo result = new speedInfo();
+        float f;
+        String unit;
+        if (s > 0.1 * 1024 * 1024 * 1024) {
+            f = s / 1024f / 1024f / 1024f;
+            unit = context.getString(R.string.unit_gbs);
+        } else if (s > 0.1 * 1024 * 1024) {
+            f = s / 1024f / 1024f;
+            unit = context.getString(R.string.unit_mbs);
+        } else {
+            f = s / 1024f;
+            unit = context.getString(R.string.unit_kbs);
+        }
+
+        result.speedUnit = unit;
+        result.speedValue = f;
+
+        return result;
+    }
+
+    public static class speedInfo {
+        public float speedValue;
+        public String speedUnit;
     }
 }

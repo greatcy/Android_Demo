@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="gradient_arc_color">
+        <item>@color/colorAccent</item>
+    </integer-array>
+</resources>

@@ -12,7 +12,12 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/ActionBarTheme"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@android:color/darker_gray" />
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/main_content"
@@ -25,39 +30,34 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <RelativeLayout android:layout_width="match_parent"
-                android:layout_height="140dp"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 app:layout_scrollFlags="scroll">
 
-                <LinearLayout
+                <com.eli.simplestdemo.download.widget.DialProgress
+                    android:id="@+id/dial_progress_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_speed_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:gravity="right|center_vertical"
-                        android:text="1.2"
-                        android:textColor="@android:color/black"
-                        android:textSize="30sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_speed_unit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="6dp"
-                        android:layout_weight="1"
-                        android:gravity="left|center_vertical"
-                        android:text="  MB/s"
-                        android:textColor="@color/colorText"
-                        android:textSize="16sp"
-                        android:textStyle="normal" />
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="10dp"
+                    app:animTime="1000"
+                    app:arcColors="@color/colorAccent"
+                    app:bgArcColor="@color/colorText"
+                    app:arcWidth="15dp"
+                    app:dialIntervalDegree="6"
+                    app:dialWidth="2dp"
+                    app:maxValue="1024"
+                    app:startAngle="135"
+                    app:sweepAngle="270"
+                    app:unit="@string/unit_kbs"
+                    app:unitSize="20sp"
+                    app:unitColor="@color/colorText"
+                    app:value="1000"
+                    app:valueSize="25sp"
+                    app:textOffsetPercentInRadius="0.4"/>
 
             </RelativeLayout>
 
@@ -98,11 +98,10 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_folder_open"
                 android:tint="@android:color/white"
-                fab:fab_size="mini"
                 fab:fab_colorNormal="@color/colorAccent"
                 fab:fab_colorPressed="@color/pressColorAccent"
-                fab:fab_title="@string/add_torrent"
-                />
+                fab:fab_size="mini"
+                fab:fab_title="@string/add_torrent" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/torrent_magnet_button"
@@ -113,8 +112,7 @@
                 fab:fab_colorNormal="@color/colorAccent"
                 fab:fab_colorPressed="@color/pressColorAccent"
                 fab:fab_size="mini"
-                fab:fab_title="@string/add_magnet"
-                />
+                fab:fab_title="@string/add_magnet" />
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
     </android.support.design.widget.CoordinatorLayout>

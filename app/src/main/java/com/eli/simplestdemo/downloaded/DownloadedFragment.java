@@ -23,7 +23,7 @@ import java.util.List;
 
 public class DownloadedFragment extends Fragment implements IFragmentInterface,UIRefreshAgent.ICallBack {
     private RecyclerView mRecyclerView;
-    private NewDownloadedAdapter mAdapter;
+    private DownloadedAdapter mAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class DownloadedFragment extends Fragment implements IFragmentInterface,U
         for (int i = 0; i < myDataset.length; i++) {
             myDataset[i] = "info " + i;
         }
-        mAdapter = new NewDownloadedAdapter(getActivity());
+        mAdapter = new DownloadedAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
 
         UIRefreshAgent.getInstance(getActivity()).registerMonitor(this, UIRefreshAgent.MONITOR_DOWNLOADED_FLAG);

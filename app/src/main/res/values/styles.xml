@@ -11,8 +11,6 @@
 
     <style name="ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:actionBarDivider">@null</item>
-        <item name="actionBarDivider">@null</item>
     </style>
 
     <style name="OptionItemTextView">

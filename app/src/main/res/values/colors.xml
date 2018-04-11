@@ -6,4 +6,5 @@
     <color name="pressColorAccent">#3A5FCD</color>
 
     <color name="colorText">#B0B0B0</color>
+    <color name="white">#FFF</color>
 </resources>

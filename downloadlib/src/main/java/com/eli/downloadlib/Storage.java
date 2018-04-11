@@ -440,7 +440,7 @@ public class Storage extends com.github.axet.androidlibrary.app.Storage implemen
             uploaded.end(b.getUploaded());
         }
 
-        // "Left: 5m 30s · ↓ 1.5Mb/s · ↑ 0.6Mb/s"
+        // "Left: 5m 30s · ↓ 1.5Mb/s
         public String status() {
             String str = "";
 
@@ -449,11 +449,7 @@ public class Storage extends com.github.axet.androidlibrary.app.Storage implemen
                 case Libtorrent.StatusChecking:
                 case Libtorrent.StatusPaused:
                 case Libtorrent.StatusSeeding:
-                    if (Libtorrent.metaTorrent(t))
-                        str += Utils.formatSize(context, Libtorrent.torrentBytesLength(t)) + " · ";
-
-                    str += "↓ " + Utils.formatSize(context, downloaded.getCurrentSpeed()) + context.getString(R.string.per_second);
-                    str += " · ↑ " + Utils.formatSize(context, uploaded.getCurrentSpeed()) + context.getString(R.string.per_second);
+                    str = "";
                     break;
                 case Libtorrent.StatusDownloading:
                     long c = 0;
@@ -469,7 +465,6 @@ public class Storage extends com.github.axet.androidlibrary.app.Storage implemen
                     }
                     str += left;
                     str += " · ↓ " + Utils.formatSize(context, downloaded.getCurrentSpeed()) + context.getString(R.string.per_second);
-                    str += " · ↑ " + Utils.formatSize(context, uploaded.getCurrentSpeed()) + context.getString(R.string.per_second);
                     break;
             }
 
@@ -659,6 +654,10 @@ public class Storage extends com.github.axet.androidlibrary.app.Storage implemen
         boolean playing = false;
 
 //        TorrentService.updateNotify(context, header, player, playing);
+    }
+
+    public long getDownloadSpeed() {
+        return downloaded.getCurrentSpeed();
     }
 
     public void load() {
@@ -1081,6 +1080,7 @@ public class Storage extends com.github.axet.androidlibrary.app.Storage implemen
         long free = getFree(f);
         return Utils.formatFree(context, free, downloaded.getCurrentSpeed(), uploaded.getCurrentSpeed());
     }
+
 
     public Torrent addMagnet(String s) {
         Uri p = getStoragePath();

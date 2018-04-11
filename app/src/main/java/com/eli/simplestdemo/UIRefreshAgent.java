@@ -4,14 +4,19 @@ import android.content.Context;
 
 import android.os.Handler;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.eli.downloadlib.Storage;
+import com.eli.downloadlib.Utils;
+import com.eli.simplestdemo.download.widget.DialProgress;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import libtorrent.Libtorrent;
 
 /**
  * Created by eli on 18-4-7.
@@ -21,12 +26,14 @@ public class UIRefreshAgent {
     public static int MONITOR_DOWNLOADED_FLAG = 2;
     public static int MONITOR_DOWNLOADING_FLAG = 1;
     private static UIRefreshAgent mInstance;
-    private final int REFRESH_GAP = 2000;
+    private final int REFRESH_GAP = 1000;
     private Context mContext;
     private Set<WeakReference<ICallBack>> mDownloadedMonitors;
     private List<Storage.Torrent> mDownloadedTorrents;
     private Set<WeakReference<ICallBack>> mDownloadingMonitors;
     private List<Storage.Torrent> mDownloadingTorrents;
+
+    private WeakReference<DialProgress> mTotalSeepProgress;
 
     private UIRefreshAgent(Context paramContext) {
         this.mContext = paramContext.getApplicationContext();
@@ -55,14 +62,32 @@ public class UIRefreshAgent {
         }
     }
 
+    public void setTotalSeepProgress(DialProgress totalSeepProgress) {
+        this.mTotalSeepProgress = new WeakReference<>(totalSeepProgress);
+    }
+
     private void update() {
+        //update total speed info 网络测速刷新
+        Storage.getInstance(this.mContext).update();
+
+        if (mTotalSeepProgress.get()!=null){
+            Utils.speedInfo speedInfo=Utils.getSpeedInfo(mContext,Storage.getInstance(mContext).getDownloadSpeed());
+            mTotalSeepProgress.get().setValue(speedInfo.speedValue,speedInfo.speedUnit);
+        }
+
+        //upload all active task
+        for (int i = 0; i < Storage.getInstance(this.mContext).count(); i++) {
+            Storage.Torrent t = Storage.getInstance(this.mContext).torrent(i);
+            if (Libtorrent.torrentActive(t.t)) {
+                t.update();
+            }
+        }
+
         int count = Storage.getInstance(this.mContext).count();
         boolean isDLChanged = false;
-        boolean isDLIChanged = false;
         if (count == 0) {
             if (this.mDownloadingTorrents.size() != 0) {
                 this.mDownloadingTorrents.clear();
-                isDLIChanged = true;
             }
             if (this.mDownloadedTorrents.size() != 0) {
                 isDLChanged = true;
@@ -75,21 +100,20 @@ public class UIRefreshAgent {
                 if (torrent.getProgress() == 100) {
                     if (!this.mDownloadedTorrents.contains(torrent)) {
                         isDLChanged = true;
-                        isDLIChanged = true;
                         this.mDownloadedTorrents.add(torrent);
                         this.mDownloadingTorrents.remove(torrent);
                     }
                 } else if (torrent.getProgress() < 100) {
                     if (!this.mDownloadingTorrents.contains(torrent)) {
-                        isDLIChanged = true;
                         this.mDownloadingTorrents.add(torrent);
                     }
                 }
             }
         }
-        if (isDLIChanged) {
-            notify2Callbacks(this.mDownloadingMonitors, this.mDownloadingTorrents);
-        }
+
+        //TODO don't update downloading frequently
+        notify2Callbacks(this.mDownloadingMonitors, this.mDownloadingTorrents);
+
         if (isDLChanged) {
             notify2Callbacks(this.mDownloadedMonitors, this.mDownloadedTorrents);
         }
