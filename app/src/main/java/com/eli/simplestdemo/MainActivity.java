@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -12,25 +13,32 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.eli.downloadlib.API;
+import com.eli.downloadlib.Storage;
 import com.eli.fileselector.OpenFileDialog;
 import com.eli.simplestdemo.about.AboutActivity;
+import com.eli.simplestdemo.download.MagnetCreator;
 import com.eli.simplestdemo.download.widget.DialProgress;
 import com.eli.simplestdemo.downloaded.DownloadedFragment;
 import com.eli.simplestdemo.downloading.DownloadingFragment;
 import com.eli.simplestdemo.setting.SettingActivity;
+import com.eli.simplestdemo.setting.SettingConfig;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import libtorrent.Libtorrent;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ViewPager mViewPager;
@@ -95,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addMagnet.setOnClickListener(this);
 
         fam = (FloatingActionsMenu) findViewById(R.id.fab);
-        DialProgress mSpeedProgress= (DialProgress) findViewById(R.id.dial_progress_bar);
+        DialProgress mSpeedProgress = (DialProgress) findViewById(R.id.dial_progress_bar);
         UIRefreshAgent.getInstance(this).setTotalSeepProgress(mSpeedProgress);
 
         initViewpager();
@@ -161,13 +169,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         dialog.show();
                     }
                 });
-                fam.collapse();
                 break;
             case R.id.torrent_magnet_button:
-                fam.collapse();
+                MagnetCreator creator = new MagnetCreator();
+                creator.createMagnet(MainActivity.this, new MagnetCreator.ICallBack() {
+                    @Override
+                    public void onCreateMagnet(String magnetUrl) {
+                        Log.d(Const.LOG_TAG, "magnet url: " + magnetUrl);
+                        if (!TextUtils.isEmpty(magnetUrl)) {
+                            List<String> m = Storage.getInstance(MainActivity.this).splitMagnets(magnetUrl);
+                            for (String s : m) {
+                                Storage.getInstance(MainActivity.this).addMagnet(s);
+                            }
+                            Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
                 break;
 
         }
+        fam.collapse();
     }
 
     private Runnable mGrantedPermissionHolder;
@@ -204,6 +225,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (getPermission && mGrantedPermissionHolder != null) {
             mGrantedPermissionHolder.run();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (SettingConfig.getInstance().isKeepScreenOn()) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
 }

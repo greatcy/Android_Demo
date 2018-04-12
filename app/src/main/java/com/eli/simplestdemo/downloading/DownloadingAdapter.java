@@ -95,7 +95,8 @@ class DownloadingAdapter extends RecyclerView.Adapter<DownloadingAdapter.ViewHol
         Storage.Torrent torrent = mData.get(position);
 
         holder.mTaskName.setText(torrent.name());
-        holder.mTaskSize.setText(Utils.formatSize(mContext, Libtorrent.torrentBytesLength(torrent.t)));
+        holder.mTaskSize.setText(!Libtorrent.metaTorrent(torrent.t) ?
+                "N/A" : Utils.formatSize(mContext, Libtorrent.torrentBytesLength(torrent.t)));
         holder.mProgressBar.setProgress(torrent.getProgress());
         setPOPMenu(torrent, holder.optionMenu);
         holder.mDownloadStatus.setText(torrent.status());
