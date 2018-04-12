@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.eli.downloadlib.API;
 import com.eli.fileselector.OpenFileDialog;
+import com.eli.simplestdemo.about.AboutActivity;
 import com.eli.simplestdemo.download.widget.DialProgress;
 import com.eli.simplestdemo.downloaded.DownloadedFragment;
 import com.eli.simplestdemo.downloading.DownloadingFragment;
@@ -62,13 +63,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Intent intent = new Intent(this, SettingActivity.class);
+                intent = new Intent(this, SettingActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_about:
-
+                intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
                 return true;
             case R.id.action_exit:
                 finish();

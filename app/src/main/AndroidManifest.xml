@@ -18,8 +18,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".setting.SettingActivity"
-            />
+        <activity android:name=".setting.SettingActivity" />
+
+        <activity android:name=".about.AboutActivity"
+            android:theme="@style/DialogActivity"/>
     </application>
 
 </manifest>

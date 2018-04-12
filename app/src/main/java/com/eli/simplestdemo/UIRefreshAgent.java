@@ -70,9 +70,15 @@ public class UIRefreshAgent {
         //update total speed info 网络测速刷新
         Storage.getInstance(this.mContext).update();
 
-        if (mTotalSeepProgress.get()!=null){
-            Utils.speedInfo speedInfo=Utils.getSpeedInfo(mContext,Storage.getInstance(mContext).getDownloadSpeed());
-            mTotalSeepProgress.get().setValue(speedInfo.speedValue,speedInfo.speedUnit);
+        if (mTotalSeepProgress != null && mTotalSeepProgress.get() != null) {
+            final Utils.speedInfo speedInfo = Utils.getSpeedInfo(mContext, Storage.getInstance(mContext).getDownloadSpeed());
+
+            new Handler(mContext.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    mTotalSeepProgress.get().setValue(speedInfo.speedValue, speedInfo.speedUnit);
+                }
+            });
         }
 
         //upload all active task

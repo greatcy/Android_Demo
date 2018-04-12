@@ -31,5 +31,14 @@
     <string name="setting_download_only_wifi">Download only in wifi</string>
     <string name="setting_keep_screen_on">Keep screen on</string>
 
-    <string name="speed">speed</string>>
+    <string name="speed">speed</string>
+
+    <string name="about">
+        %s V%s all rights reserved.\n
+        free software alliance.
+    </string>
+
+    <string name="about_title">About</string>
+    <string name="about_description"><![CDATA[This is a test dialog.\n    —free soft alliance.]]></string>
+    <string name="about_format">%s V%s</string>
 </resources>
