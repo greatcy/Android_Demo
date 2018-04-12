@@ -1,6 +1,7 @@
 package com.eli.simplestdemo.downloaded;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.eli.downloadlib.Storage;
 import com.eli.downloadlib.Utils;
 import com.eli.simplestdemo.R;
+import com.eli.simplestdemo.download.DialogUtils;
 
 import java.util.List;
 
@@ -42,7 +44,12 @@ class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.ViewHolde
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.action_delete:
-                    Storage.getInstance(mContext).remove(mTorrent);
+                    DialogUtils.showConfirmDeleteDLG(mContext, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Storage.getInstance(mContext).remove(mTorrent);
+                        }
+                    },null);
                     break;
                 case R.id.tv_open:
                     break;

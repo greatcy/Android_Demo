@@ -44,4 +44,9 @@
     <string name="about_title">About</string>
     <string name="about_description"><![CDATA[This is a test dialog.\n    —free soft alliance.]]></string>
     <string name="about_format">%s V%s</string>
+
+    <string name="dlg_delete_title">delete item</string>
+    <string name="dlg_delete_content">delete item</string>
+    <string name="dlg_confirm">confirm</string>
+    <string name="dlg_cancel">cancel</string>
 </resources>
