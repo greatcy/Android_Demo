@@ -29,6 +29,7 @@ public class API {
     private static Thread initThread;
     private static final ArrayList<Runnable> initArray = new ArrayList<>();
     private static final Handler handler = new Handler();
+    private static boolean mHasInit;
 
     public interface ICreateTaskCallBack {
         void onComplete();
@@ -39,11 +40,14 @@ public class API {
      *
      * @param runAfterInit
      */
-    public static void init(final Context context, Runnable runAfterInit) {
-        synchronized (initArray) {
-            if (runAfterInit != null)
-                initArray.add(runAfterInit);
+    public synchronized static void init(final Context context, Runnable runAfterInit) {
+        if (mHasInit && runAfterInit != null) {
+            runAfterInit.run();
+            return;
         }
+
+        if (runAfterInit != null)
+            initArray.add(runAfterInit);
 
         if (initThread != null)
             return;
@@ -51,13 +55,14 @@ public class API {
             @Override
             public void run() {
                 Storage.getInstance(context).create();
-                synchronized (initArray) {
-                    for (Runnable r : initArray) {
-                        handler.post(r);
-                    }
-                    initArray.clear();
-                    initThread = null;
+
+                for (Runnable r : initArray) {
+                    handler.post(r);
                 }
+                initArray.clear();
+                initThread = null;
+
+                mHasInit = true;
             }
         }, "Init Thread");
         initThread.start();
