@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.eli.downloadlib.Storage;
 import com.eli.downloadlib.Utils;
+import com.eli.simplestdemo.download.NotificationManager;
 import com.eli.simplestdemo.download.widget.DialProgress;
 
 import java.lang.ref.WeakReference;
@@ -35,12 +36,16 @@ public class UIRefreshAgent {
 
     private WeakReference<DialProgress> mTotalSeepProgress;
 
+    private NotificationManager mManager;
+
     private UIRefreshAgent(Context paramContext) {
         this.mContext = paramContext.getApplicationContext();
         this.mDownloadedMonitors = new HashSet();
         this.mDownloadingMonitors = new HashSet();
         this.mDownloadingTorrents = new ArrayList();
         this.mDownloadedTorrents = new ArrayList();
+
+        mManager = new NotificationManager();
     }
 
     public static UIRefreshAgent getInstance(Context paramContext) {
@@ -108,12 +113,22 @@ public class UIRefreshAgent {
                         isDLChanged = true;
                         this.mDownloadedTorrents.add(torrent);
                         this.mDownloadingTorrents.remove(torrent);
+                        mManager.updateNotification((int) torrent.t, 0, mContext, torrent.name(), "");
                     }
                 } else if (torrent.getProgress() < 100) {
                     if (!this.mDownloadingTorrents.contains(torrent)) {
                         this.mDownloadingTorrents.add(torrent);
                     }
                 }
+            }
+        }
+
+        //update downloading progress
+        for (Storage.Torrent t : this.mDownloadingTorrents) {
+            if (t.getProgress() != 0) {
+                mManager.updateNotification((int) t.t, t.getProgress(), mContext, t.name(), t.status());
+            } else {
+                mManager.createNotification((int) t.t, mContext, t.name(), t.status());
             }
         }
 
