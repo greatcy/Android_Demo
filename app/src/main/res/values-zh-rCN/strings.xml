@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">DLPlayer</string>
+
+    <string name="tab_downloading">下载中</string>
+    <string name="tab_downloaded">已完成</string>
+
+    <string name="tips_create_task_complete">下载任务创建成功!</string>
+
+    <string name="action_search">搜索</string>
+    <string name="action_setting">设置</string>
+    <string name="action_about">关于</string>
+    <string name="action_exit">退出</string>
+
+    <string name="action_start">开始/恢复</string>
+    <string name="action_pause">暂停</string>
+    <string name="action_delete">删除</string>
+    <string name="action_open_with_other">选择打开方式</string>
+
+    <string name="option_share">分享</string>
+
+    <string name="add_torrent">添加种子</string>
+    <string name="add_magnet">添加磁力链</string>
+    <string name="add_magnet_title">请输入磁力链地址</string>
+
+    <string name="sure">确定</string>
+
+    <string name="setting_download_location_title">下载文件目录</string>
+    <string name="setting_open_select_dlg_title">按选择文件下载</string>
+    <string name="setting_download_only_wifi_title">仅在wifi下下载</string>
+    <string name="setting_keep_screen_on_title">保持屏幕常亮</string>
+
+    <string name="setting_download_location">设置下载文件目录</string>
+    <string name="setting_open_select_dlg">下载前选择文件</string>
+    <string name="setting_download_only_wifi">仅在wifi下下载</string>
+    <string name="setting_keep_screen_on">下载中保持屏幕常亮</string>
+
+    <string name="speed">速度</string>
+
+    <string name="about">
+        %s V%s all rights reserved.\n
+        free software alliance.
+    </string>
+
+    <string name="about_title">About</string>
+    <string name="about_description"><![CDATA[This is a test dialog.\n    —free soft alliance.]]></string>
+    <string name="about_format">%s V%s</string>
+
+    <string name="dlg_delete_title">删除任务</string>
+    <string name="dlg_delete_content">确认删除任务?</string>
+    <string name="dlg_confirm">确定</string>
+    <string name="dlg_cancel">取消</string>
+</resources>

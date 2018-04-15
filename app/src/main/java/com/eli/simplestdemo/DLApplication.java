@@ -24,8 +24,8 @@ public class DLApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        UIRefreshAgent.getInstance(this).startUpdateLooper();
+//        UIRefreshAgent.getInstance(this).startUpdateLooper();
 
-        SettingConfig.getInstance().init();
+//        SettingConfig.getInstance().init();
     }
 }
