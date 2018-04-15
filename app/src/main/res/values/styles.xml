@@ -27,4 +27,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="text_1">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="text_description">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorText</item>
+    </style>
+
 </resources>

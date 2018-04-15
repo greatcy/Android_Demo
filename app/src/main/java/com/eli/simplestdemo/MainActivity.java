@@ -171,22 +171,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
                 break;
             case R.id.torrent_magnet_button:
-                MagnetCreator creator = new MagnetCreator();
-                creator.createMagnet(MainActivity.this, new MagnetCreator.ICallBack() {
+                requestRWPermission(new Runnable() {
                     @Override
-                    public void onCreateMagnet(String magnetUrl) {
-                        Log.d(Const.LOG_TAG, "magnet url: " + magnetUrl);
-                        if (!TextUtils.isEmpty(magnetUrl)) {
-                            List<String> m = Storage.getInstance(MainActivity.this).splitMagnets(magnetUrl);
-                            for (String s : m) {
-                                Storage.getInstance(MainActivity.this).addMagnet(s);
+                    public void run() {
+                        MagnetCreator creator = new MagnetCreator();
+                        creator.createMagnet(MainActivity.this, new MagnetCreator.ICallBack() {
+                            @Override
+                            public void onCreateMagnet(String magnetUrl) {
+                                Log.d(Const.LOG_TAG, "magnet url: " + magnetUrl);
+                                if (!TextUtils.isEmpty(magnetUrl)) {
+                                    List<String> m = Storage.getInstance(MainActivity.this).splitMagnets(magnetUrl);
+                                    for (String s : m) {
+                                        Storage.getInstance(MainActivity.this).addMagnet(s);
+                                    }
+                                    Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
+                                }
                             }
-                            Toast.makeText(MainActivity.this, R.string.tips_create_task_complete, Toast.LENGTH_SHORT).show();
-                        }
+                        });
                     }
                 });
                 break;
-
         }
         fam.collapse();
     }

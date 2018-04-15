@@ -6,8 +6,6 @@ import android.text.TextUtils;
 
 import com.eli.simplestdemo.R;
 
-import org.jsoup.helper.StringUtil;
-
 /**
  * Created by chenjunheng on 2018/4/15.
  */

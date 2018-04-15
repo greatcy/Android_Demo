@@ -2,6 +2,7 @@ package com.eli.simplestdemo.downloaded;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.eli.downloadlib.Storage;
 import com.eli.downloadlib.Utils;
 import com.eli.simplestdemo.R;
+import com.eli.simplestdemo.detail.DownloadDetailActivity;
 import com.eli.simplestdemo.download.DialogUtils;
 
 import java.util.List;
@@ -49,7 +51,7 @@ class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.ViewHolde
                         public void onClick(DialogInterface dialog, int which) {
                             Storage.getInstance(mContext).remove(mTorrent);
                         }
-                    },null);
+                    }, null);
                     break;
                 case R.id.tv_open:
                     break;
@@ -100,6 +102,16 @@ class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.ViewHolde
 
         holder.mTaskName.setText(torrent.name());
         holder.mTaskSize.setText(!Libtorrent.metaTorrent(torrent.t) ? "N/A" : Utils.formatSize(mContext, Libtorrent.torrentBytesLength(torrent.t)));
+
+        holder.itemView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, DownloadDetailActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
+
         setPOPMenu(torrent, holder.optionMenu);
 
         Log.d(LOG_TAG, "download progress:" + torrent.getProgress());

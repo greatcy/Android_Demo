@@ -1,16 +1,25 @@
 package com.eli.simplestdemo.setting;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.eli.downloadlib.API;
+import com.eli.fileselector.OpenFileDialog;
+import com.eli.simplestdemo.Const;
+import com.eli.simplestdemo.MainActivity;
 import com.eli.simplestdemo.R;
+
+import java.io.File;
 
 /**
  * Created by chenjunheng on 2018/4/10.
@@ -95,7 +104,18 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setting_location_path:
-                //TODO open dialog
+                final OpenFileDialog dialog = new OpenFileDialog(SettingActivity.this, OpenFileDialog.DIALOG_TYPE.FOLDER_DIALOG, false);
+                dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface d, int which) {
+                        File f = dialog.getCurrentPath();
+                        if (f != null && f.exists()) {
+                            Log.d(Const.LOG_TAG, "select file path:" + f.getAbsolutePath());
+
+                        }
+                    }
+                });
+                dialog.show();
                 break;
         }
     }

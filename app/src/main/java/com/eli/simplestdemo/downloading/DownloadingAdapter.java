@@ -2,6 +2,7 @@ package com.eli.simplestdemo.downloading;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.eli.downloadlib.Storage;
 import com.eli.downloadlib.Utils;
 import com.eli.simplestdemo.R;
+import com.eli.simplestdemo.detail.DownloadDetailActivity;
 import com.eli.simplestdemo.download.DialogUtils;
 
 import java.util.List;
@@ -109,6 +111,14 @@ class DownloadingAdapter extends RecyclerView.Adapter<DownloadingAdapter.ViewHol
         holder.mProgressBar.setProgress(torrent.getProgress());
         setPOPMenu(torrent, holder.optionMenu);
         holder.mDownloadStatus.setText(torrent.status());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, DownloadDetailActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
 
         Log.d(LOG_TAG, "download progress:" + torrent.getProgress());
     }

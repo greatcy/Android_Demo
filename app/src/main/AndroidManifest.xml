@@ -27,6 +27,10 @@
         <activity
             android:name=".about.AboutActivity"
             android:theme="@style/DialogActivity" />
+
+        <activity
+            android:name=".detail.DownloadDetailActivity"
+            android:theme="@style/DialogActivity" />
     </application>
 
 </manifest>
