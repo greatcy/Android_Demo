@@ -23,7 +23,11 @@
     </style>
 
     <style name="Splash" parent="@style/Theme.AppCompat">
-        <item name="windowBackground">@android:color/holo_blue_dark</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/holo_blue_dark</item>
     </style>
 
     <style name="DialogActivity" parent="@style/Theme.AppCompat.Dialog">
